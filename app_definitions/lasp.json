@@ -1,0 +1,14 @@
+{
+  "id": "lasp",
+  "cpus": 0.2,
+  "mem": 20.0,
+  "instances": 1,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "cmeiklejohn/lasp",
+      "network": "HOST",
+      "forcePullImage": true
+    }
+  }
+}

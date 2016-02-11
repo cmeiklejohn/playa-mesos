@@ -1,0 +1,15 @@
+{
+  "id": "epmd",
+  "cpus": 0.2,
+  "mem": 20.0,
+  "instances": 1,
+  "constraints": [["hostname", "UNIQUE", ""]],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "cmeiklejohn/epmd",
+      "network": "HOST",
+      "forcePullImage": true
+    }
+  }
+}
