@@ -75,6 +75,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Install epmd
   config.vm.provision "shell", name: "epmd Provision", path: provision_path("epmd")
 
+  # Install Lasp
+  config.vm.provision "shell", name: "Lasp Provision", path: provision_path("lasp")
+
   # Only provision if explicitly request with 'provision' or 'up --provision'
   if ARGV.any? { |arg| arg =~ /^(--)?provision$/ }
     config.vm.provision :shell do |shell|
