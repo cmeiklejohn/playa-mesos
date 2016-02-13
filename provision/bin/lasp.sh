@@ -15,17 +15,17 @@ cat <<EOF > lasp.json
   "dependencies": [],
   "cpus": 0.2,
   "mem": 20.0,
-  "instances": 1,
+  "instances": 2,
   "container": {
     "type": "DOCKER",
     "docker": {
       "image": "cmeiklejohn/lasp-dev",
-      "network": "BRIDGE",
-      "portMappings": [
-        { "containerPort": 8080, "hostPort": 0 }
-      ],
+      "network": "HOST",
       "forcePullImage": true
     }
+  },
+  "env": {
+    "IP": "10.141.141.10"
   },
   "healthChecks": [
     {
