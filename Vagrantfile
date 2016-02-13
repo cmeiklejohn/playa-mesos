@@ -11,6 +11,10 @@ pmconf = PlayaSettings.new(PM_CONFIG)
 
 box_url = "#{pmconf.base_url}/#{pmconf.box_name}-#{pmconf.platform}.box"
 
+def provision_path(type)
+  return "./provision/bin/#{type}.sh"
+end
+
 # #############################################################################
 # Vagrant VM Definitions
 # #############################################################################
@@ -61,6 +65,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Make the project root available to the guest VM.
   # config.vm.synced_folder '.', '/vagrant'
+
+  # Wait for Marathon to start...
+  config.vm.provision "shell", name: "Marathon Provision", path: provision_path("marathon")
 
   # Only provision if explicitly request with 'provision' or 'up --provision'
   if ARGV.any? { |arg| arg =~ /^(--)?provision$/ }
