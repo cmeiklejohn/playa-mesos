@@ -69,6 +69,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Wait for Marathon to start...
   config.vm.provision "shell", name: "Marathon Provision", path: provision_path("marathon")
 
+  # Install Mesos-DNS
+  config.vm.provision "shell", name: "Mesos-DNS Provision", path: provision_path("mesos-dns")
   # Only provision if explicitly request with 'provision' or 'up --provision'
   if ARGV.any? { |arg| arg =~ /^(--)?provision$/ }
     config.vm.provision :shell do |shell|
