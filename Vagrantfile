@@ -71,6 +71,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Install Mesos-DNS
   config.vm.provision "shell", name: "Mesos-DNS Provision", path: provision_path("mesos-dns")
+
+  # Install epmd
+  config.vm.provision "shell", name: "epmd Provision", path: provision_path("epmd")
+
   # Only provision if explicitly request with 'provision' or 'up --provision'
   if ARGV.any? { |arg| arg =~ /^(--)?provision$/ }
     config.vm.provision :shell do |shell|
