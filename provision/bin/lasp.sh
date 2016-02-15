@@ -4,8 +4,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-export MARATHON=http://localhost:8080
-
 echo ">>> Configuring Lasp"
 cd /tmp
 
@@ -13,9 +11,9 @@ cat <<EOF > lasp.json
 {
   "id": "lasp",
   "dependencies": [],
-  "cpus": 0.2,
-  "mem": 20.0,
-  "instances": 2,
+  "cpus": 0.1,
+  "mem": 5.0,
+  "instances": 1,
   "container": {
     "type": "DOCKER",
     "docker": {
@@ -25,7 +23,7 @@ cat <<EOF > lasp.json
     }
   },
   "env": {
-    "IP": "10.141.141.10"
+    "IP": "$IP"
   },
   "healthChecks": [
     {
@@ -42,7 +40,11 @@ cat <<EOF > lasp.json
 }
 EOF
 
-echo ">>> Adding lasp to marathon"
+echo ">>> Removing lasp from Marathon"
+curl -H 'Content-type: application/json' -X DELETE $MARATHON/v2/apps/lasp
+sleep 2
+
+echo ">>> Adding lasp to Marathon"
 curl -H 'Content-type: application/json' -X POST -d @lasp.json $MARATHON/v2/apps
 echo
 sleep 10

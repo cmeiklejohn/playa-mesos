@@ -22,8 +22,8 @@ chmod 755 mesos-dns
 echo ">>> Configuring Mesos DNS"
 cat <<EOF > config.json
 {
-  "zk": "zk://10.141.141.10:2181/mesos",
-  "masters": ["10.141.141.10:5050"],
+  "zk": "zk://$IP:2181/mesos",
+  "masters": ["$IP:5050"],
   "refreshSeconds": 60,
   "ttl": 60,
   "domain": "mesos",
@@ -34,7 +34,7 @@ cat <<EOF > config.json
   "dnson": true,
   "httpport": 8123,
   "externalon": true,
-  "listener": "10.141.141.10",
+  "listener": "0.0.0.0",
   "SOAMname": "ns1.mesos",
   "SOARname": "root.ns1.mesos",
   "SOARefresh": 60,
@@ -51,8 +51,8 @@ cat <<EOF > mesos-dns.json
         "/mesos-dns",
         "-config=/config.json"
     ],
-    "cpus": 0.2,
-    "mem": 20,
+    "cpus": 0.1,
+    "mem": 5.0,
     "id": "mesos-dns",
     "instances": 1,
     "container": {
@@ -74,7 +74,7 @@ cat <<EOF > mesos-dns.json
 EOF
 
 echo ">>> Adding Mesos DNS job to Marathon"
-curl -X POST http://localhost:8080/v2/apps -H "Content-Type: application/json" -d@mesos-dns.json
+curl -H 'Content-type: application/json' -X POST -d @mesos-dns.json $MARATHON/v2/apps
 
 echo ">>> Modifying local DNS to use Mesos DNS"
-sed -i '1s/^/nameserver 10.141.141.10\n /' /etc/resolv.conf
+sed -i "1s/^/nameserver $IP\n /" /etc/resolv.conf
