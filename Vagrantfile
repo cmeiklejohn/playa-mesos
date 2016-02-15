@@ -15,6 +15,14 @@ def provision_path(type)
   return "./provision/bin/#{type}.sh"
 end
 
+$environment_provision = <<SCRIPT
+echo "export IP=#{pmconf.ip_address}" >> /root/.profile
+echo "export MARATHON=http://localhost:8080" >> /root/.profile
+source /root/.profile
+echo "IP for execution: ${IP}"
+echo "MARATHON for execution: ${MARATHON}"
+SCRIPT
+
 # #############################################################################
 # Vagrant VM Definitions
 # #############################################################################
@@ -66,7 +74,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Make the project root available to the guest VM.
   # config.vm.synced_folder '.', '/vagrant'
 
-  # Wait for Marathon to start...
+  # Set up the environment
+  config.vm.provision "shell", name: "Environment Provision", inline: $environment_provision
+
+  # Wait for Marathon to start
   config.vm.provision "shell", name: "Marathon Provision", path: provision_path("marathon")
 
   # Install Mesos-DNS
