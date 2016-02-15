@@ -4,8 +4,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-export MARATHON=http://localhost:8080
-
 echo ">>> Configuring epmd"
 cd /tmp
 
